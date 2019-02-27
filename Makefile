@@ -6,7 +6,7 @@
 #    By: elchrist <elchrist@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/21 22:00:14 by elchrist          #+#    #+#              #
-#    Updated: 2019/02/22 23:17:56 by elchrist         ###   ########.fr        #
+#    Updated: 2019/02/27 12:27:29 by creek            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,25 +18,29 @@ SRC = main.c \
 	reading.c \
 	functions.c \
 	list_functions.c
-OBJ = $(SRC:.c=.o)
-# SRC = $(wildcard *.c)
-# OBJ = $(patsubst %.c,%.o,$(wildcard *.c))
-FLAGS = -Wall -Wextra -Werror
-HEADER = -I fillit.h
-LIBFT = libft/
-LIBINCLUDES = -I /libft/includes
+
+OBJ   = $(SRC:.c=.o)
+
+LIB_DIR  = libft/
+LIBFT   = libft/libft.a
+LIB_INCS  = libft/includes
 
 all: $(NAME)
 
-$(NAME):
-	make -C $(LIBFT)
-	gcc  -o $(NAME) $(FLAGS) $(SRC) $(HEADER) $(LIBINCLUDES) -L $(LIBFT) -lft
+$(NAME): $(LIBFT) $(OBJ)
+	gcc $(FLAGS) -o $(NAME) $(OBJ) $(LIBFT)
+
+$(LIBFT):
+	make -C $(LIB_DIR)
+
+%.o: %.c $(HEADER) Makefile
+	gcc $(FLAGS) -I$(LIB_INCS) -c $< -o $@
 
 clean:
 	make -C libft/ clean
 	rm -f $(OBJ)
 
-fclean:
+fclean: clean
 	make -C libft/ fclean
 	rm -f $(NAME)
 

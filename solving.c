@@ -6,7 +6,7 @@
 /*   By: creek <creek@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/08 00:41:43 by creek             #+#    #+#             */
-/*   Updated: 2019/02/22 23:18:26 by elchrist         ###   ########.fr       */
+/*   Updated: 2019/02/27 12:50:16 by creek            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,20 @@ int		ft_sqrt_round_up(int nb)
 	return (i++);
 }
 
-void	empty_map_drawing(char **map, int map_size)
+int		empty_map_drawing(char **map, int map_size)
 {
 	int i;
 
 	i = 0;
 	while (i < map_size)
 	{
-		map[i] = ft_strnew((size_t)map_size + 1);
+		if (!(map[i] = ft_strnew((size_t)map_size)))
+			return (0);
 		ft_memset(map[i], '.', (size_t)map_size);
 		i++;
 	}
+	map[i] = NULL;
+	return (1);
 }
 
 int		solving(int quantity, t_list *tetris, char **map, int map_size)
@@ -66,7 +69,7 @@ int		solving(int quantity, t_list *tetris, char **map, int map_size)
 	return (0);
 }
 
-char	**fillit(int quantity, t_list *tetris)
+int		fillit(int quantity, t_list *tetris)
 {
 	int		map_size;
 	char	**map;
@@ -74,16 +77,20 @@ char	**fillit(int quantity, t_list *tetris)
 	map_size = ft_sqrt_round_up(quantity * 4);
 	if (!(map = (char **)malloc((sizeof(*map) * (map_size + 1)))))
 		return (0);
-	empty_map_drawing(map, map_size);
+	if (!(empty_map_drawing(map, map_size)))
+		return (0);
 	while (!(solving(quantity, tetris, map, map_size)))
 	{
-		free(map);
+		map_clearing(map, map_size);
 		map_size++;
 		if (!(map = (char **)malloc((sizeof(*map) * (map_size + 1)))))
 			return (0);
-		empty_map_drawing(map, map_size);
+		if (!(empty_map_drawing(map, map_size)))
+			return (0);
 	}
-	return (map);
+	printing_fin_map(map, map_size);
+	map_clearing(map, map_size);
+	return (1);
 }
 
 int		left_corner_check(t_tetr *tetri, int *yx)

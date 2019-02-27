@@ -6,7 +6,7 @@
 /*   By: elchrist <elchrist@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 19:35:08 by elchrist          #+#    #+#             */
-/*   Updated: 2019/02/22 23:11:55 by elchrist         ###   ########.fr       */
+/*   Updated: 2019/02/27 22:32:14 by elchrist         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,37 @@ void	init_vars(int *arr)
 	arr[0] = 1;
 	arr[1] = 1;
 	arr[2] = -1;
+}
+
+void	init_square(int *arr)
+{
+	arr[0] = 2;
+	arr[1] = 2;
+}
+
+void	map_clearing(char **map, int map_size)
+{
+	int i;
+
+	i = 0;
+	while (i < map_size)
+	{
+		ft_strdel(&map[i]);
+		i++;
+	}
+	free(map);
+	map = NULL;
+}
+
+void	printing_fin_map(char **map, int map_size)
+{
+	int	j;
+
+	j = 0;
+	while (j < map_size)
+	{
+		ft_putstr(map[j]);
+		ft_putchar('\n');
+		j++;
+	}
 }

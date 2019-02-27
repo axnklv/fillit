@@ -6,7 +6,7 @@
 /*   By: elchrist <elchrist@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 20:56:24 by elchrist          #+#    #+#             */
-/*   Updated: 2019/02/22 23:11:19 by elchrist         ###   ########.fr       */
+/*   Updated: 2019/02/27 22:52:32 by elchrist         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,32 +58,32 @@ char		**create_shape(char *buff, char letter)
 	return (temp);
 }
 
-t_list		*create_tetr(char *b, char letter)
+t_list		*create_tetr(char *buff, char letter)
 {
-	int		a[3];
+	int		arr[3];
 	t_tetr	tetr;
 
-	init_vars(a);
-	while (b[++a[2]] != '\0')
+	init_vars(arr);
+	while (buff[++arr[2]] != '\0')
 	{
-		if (b[a[2]] == '#')
+		if (buff[arr[2]] == '#')
 		{
-			if (b[a[2] + 1] == '#' && b[a[2] + 5] == '#' && b[a[2] + 6] == '#')
+			if (arr[2] < 14 && buff[arr[2] + 1] == '#'
+				&& buff[arr[2] + 5] == '#' && buff[arr[2] + 6] == '#')
 			{
-				a[0] = 2;
-				a[1] = 2;
+				init_square(arr);
 				break ;
 			}
-			if ((a[2] < 19) && (b[a[2] + 1] == '#'))
-				a[1]++;
-			if ((a[2] < 14) && (b[a[2] + 5] == '#'))
-				a[0]++;
+			if ((arr[2] < 19) && (buff[arr[2] + 1] == '#'))
+				arr[1]++;
+			if ((arr[2] < 14) && (buff[arr[2] + 5] == '#'))
+				arr[0]++;
 		}
 	}
-	tetr.height = a[0];
-	tetr.width = a[1];
+	tetr.height = arr[0];
+	tetr.width = arr[1];
 	tetr.letter = letter;
-	tetr.shape = create_shape(b, letter);
+	tetr.shape = create_shape(buff, letter);
 	return (ft_lstnew(&tetr, sizeof(t_tetr)));
 }
 
@@ -91,9 +91,9 @@ t_list		*read_tetris(int fd)
 {
 	int		ret;
 	char	letter;
-	char	buff[22];
 	t_list	*tetris;
 	t_list	*tetr;
+	char	buff[21];
 
 	if (fd < 0)
 		it_is_error();
